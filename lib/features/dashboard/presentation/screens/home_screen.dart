@@ -1,16 +1,14 @@
 import 'package:coinranking/core/presentation/global_shimmer.dart';
+import 'package:coinranking/core/utils/utils.dart';
 import 'package:coinranking/features/dashboard/data/models/crypto_response.dart';
 import 'package:coinranking/features/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:coinranking/features/dashboard/presentation/screens/coin_detail_screen.dart';
 import 'package:coinranking/features/dashboard/presentation/widgets/stats_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:coinranking/core/config/colors_constant.dart';
-import 'package:coinranking/core/presentation/custom_appbar_with_logo.dart';
-import 'package:coinranking/core/presentation/custom_back_button.dart';
-import 'package:coinranking/core/presentation/custom_button.dart';
-import 'package:coinranking/core/presentation/custom_input_field.dart';
+import 'package:go_router/go_router.dart';
 
 // Data model for a cryptocurrency
 class CryptoCurrency {
@@ -24,55 +22,6 @@ class CryptoCurrency {
     required this.icon,
   });
 }
-
-// List of available cryptocurrencies
-const List<CryptoCurrency> currencies = [
-  CryptoCurrency(
-    name: 'Bitcoin',
-    symbol: 'BTC',
-    icon: 'assets/images/cryto_currencys/bit-coin.png',
-  ),
-  CryptoCurrency(
-    name: 'Ethereum',
-    symbol: 'ETH',
-    icon: 'assets/images/cryto_currencys/e.png',
-  ), // Placeholder
-  CryptoCurrency(
-    name: 'Tether',
-    symbol: 'USDT',
-    icon: 'assets/images/cryto_currencys/t.png',
-  ),
-  CryptoCurrency(
-    name: 'Dogecoin',
-    symbol: 'DOGE',
-    icon: 'assets/images/cryto_currencys/dodge.png',
-  ),
-  CryptoCurrency(
-    name: 'BNB',
-    symbol: 'BNB',
-    icon: 'assets/images/cryto_currencys/d.png',
-  ),
-  CryptoCurrency(
-    name: 'Litecoin',
-    symbol: 'LTC',
-    icon: 'assets/images/cryto_currencys/l.png',
-  ),
-  CryptoCurrency(
-    name: 'Ripple',
-    symbol: 'XRP',
-    icon: 'assets/images/cryto_currencys/r.png',
-  ),
-  CryptoCurrency(
-    name: 'Dash',
-    symbol: 'DASH',
-    icon: 'assets/images/cryto_currencys/da.png',
-  ),
-  CryptoCurrency(
-    name: 'Bytecoin',
-    symbol: 'BCN',
-    icon: 'assets/images/cryto_currencys/b.png',
-  ),
-];
 
 // The main screen widget
 class HomeScreen extends StatefulWidget {
@@ -123,21 +72,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     summaryCards: [
                       {
                         "name": "Total cryptocurrencies",
-                        "count": stats.totalCoins,
+                        "count": formatCompactNumber(stats.totalCoins),
                       },
                       {
                         "name": "Total Exchanges",
-                        "count": stats.totalExchanges,
+                        "count": formatCompactNumber(stats.totalExchanges),
                       },
                       {
                         "name": "Total Market Cap",
-                        "count": stats.totalMarketCap,
+                        "count": formatCompactNumber(stats.totalMarketCap),
                       },
                       {
                         "name": "Total 24h Volume",
-                        "count": stats.total24hVolume,
+                        "count": formatCompactNumber(stats.total24hVolume),
                       },
-                      {"name": "Total Markets", "count": stats.totalMarkets},
+                      {
+                        "name": "Total Markets",
+                        "count": formatCompactNumber(stats.totalMarkets),
+                      },
                     ],
                   ),
                   SizedBox(height: 30),
@@ -191,48 +143,53 @@ class CurrencyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 100,
-      child: Column(
-        children: [
-          Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? ColorsConstant.transparentBlue2
-                  : ColorsConstant.darkgrey,
-              borderRadius: BorderRadius.circular(7.0),
-              border: Border.all(
+    return GestureDetector(
+      onTap: () {
+        context.push(CoinDetailScreen.routeName, extra: currency.uuid);
+      },
+      child: SizedBox(
+        width: 100,
+        child: Column(
+          children: [
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
                 color: isSelected
-                    ? ColorsConstant.blue
-                    : ColorsConstant.primaryBlack,
-                width: 2,
+                    ? ColorsConstant.transparentBlue2
+                    : ColorsConstant.darkgrey,
+                borderRadius: BorderRadius.circular(7.0),
+                border: Border.all(
+                  color: isSelected
+                      ? ColorsConstant.blue
+                      : ColorsConstant.primaryBlack,
+                  width: 2,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Currency Icon
+                  currencyIcon(currency.iconUrl),
+                  // Currency Name
+                ],
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Currency Icon
-                currencyIcon(currency.iconUrl),
-                // Currency Name
-              ],
-            ),
-          ),
-          SizedBox(height: 16),
-          Text(
-            currency.name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: Colors.white,
+            SizedBox(height: 16),
+            Text(
+              currency.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: Colors.white,
 
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

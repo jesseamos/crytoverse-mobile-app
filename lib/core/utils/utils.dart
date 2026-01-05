@@ -603,3 +603,38 @@ Widget bullet(String text) {
     ),
   );
 }
+
+String formatCompactNumber(dynamic value) {
+  if (value == null) return '0';
+
+  double number;
+
+  // Handle String, int, double safely
+  if (value is String) {
+    number = double.tryParse(value.replaceAll(',', '')) ?? 0;
+  } else if (value is int) {
+    number = value.toDouble();
+  } else if (value is double) {
+    number = value;
+  } else {
+    return '0';
+  }
+
+  if (number < 1000) return number.toStringAsFixed(0);
+
+  final units = [
+    {'value': 1e12, 'symbol': 'T'},
+    {'value': 1e9, 'symbol': 'B'},
+    {'value': 1e6, 'symbol': 'M'},
+    {'value': 1e3, 'symbol': 'K'},
+  ];
+
+  for (final unit in units) {
+    if (number >= (unit['value'] as double)) {
+      final formatted = number / (unit['value'] as double);
+      return '${formatted.toStringAsFixed(formatted < 10 ? 1 : 0)}${unit['symbol']}';
+    }
+  }
+
+  return number.toStringAsFixed(0);
+}

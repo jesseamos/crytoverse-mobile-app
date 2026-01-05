@@ -236,4 +236,11 @@ class Endpoints {
   static String downgradePlan = '/subscription/downgrade';
 
   static String coins = '/coins';
+  static String getCoinsDetail({required String id}) {
+    return '/coin/$id';
+  }
+
+  static String getCoinsHistory({required String id}) {
+    return '/coin/$id/history';
+  }
 }

@@ -4,6 +4,8 @@ import 'package:coinranking/core/utils/user_storage.dart';
 import 'package:coinranking/features/dashboard/data/datasources/dashboard_remote_datasources.dart';
 import 'package:coinranking/features/dashboard/data/repository/dashboard_repository_impl.dart';
 import 'package:coinranking/features/dashboard/domain/repository/dashboard_repository.dart';
+import 'package:coinranking/features/dashboard/domain/usecases/get_coin_details_usecase.dart';
+import 'package:coinranking/features/dashboard/domain/usecases/get_coin_history_usecase.dart';
 import 'package:coinranking/features/dashboard/domain/usecases/get_coins_usecase.dart';
 import 'package:coinranking/features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -130,10 +132,16 @@ void _initDashboard() {
       () => DashboardRepositoryImpl(serviceLocator(), serviceLocator()),
     )
     //UserCase
-    ..registerFactory(() => GetCoinsUsecase(serviceLocator()));
+    ..registerFactory(() => GetCoinsUsecase(serviceLocator()))
+    ..registerFactory(() => GetCoinHistoryUsecase(serviceLocator()))
+    ..registerFactory(() => GetCoinDetailsUsecase(serviceLocator()));
   //Cubit
   serviceLocator.registerLazySingleton(
-    () => DashboardCubit(getCoinsUsecase: serviceLocator()),
+    () => DashboardCubit(
+      getCoinsUsecase: serviceLocator(),
+      getCoinDetailsUsecase: serviceLocator(),
+      getCoinHistoryUsecase: serviceLocator(),
+    ),
   );
 }
 

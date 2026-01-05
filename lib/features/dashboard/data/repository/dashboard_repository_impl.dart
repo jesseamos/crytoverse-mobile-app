@@ -3,6 +3,8 @@ import 'package:coinranking/core/errors/failures.dart';
 import 'package:coinranking/core/network/connection_checker.dart';
 import 'package:coinranking/core/utils/constants.dart';
 import 'package:coinranking/features/dashboard/data/datasources/dashboard_remote_datasources.dart';
+import 'package:coinranking/features/dashboard/data/models/coin_detail_response.dart';
+import 'package:coinranking/features/dashboard/data/models/coin_history_response.dart';
 import 'package:coinranking/features/dashboard/data/models/crypto_response.dart';
 import 'package:coinranking/features/dashboard/domain/repository/dashboard_repository.dart';
 import 'package:dartz/dartz.dart';
@@ -23,6 +25,42 @@ class DashboardRepositoryImpl implements DashboardRepository {
         return left(Failure(Constants.noConnectionErrorMessage));
       }
       final response = await dashboardRemoteDatasources.getCoins();
+
+      return right(response);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CoinDetailResponse>> getCoinDetails({
+    required String coinId,
+  }) async {
+    try {
+      if (!await (connectionChecker.isConnected)) {
+        return left(Failure(Constants.noConnectionErrorMessage));
+      }
+      final response = await dashboardRemoteDatasources.getCoinDetails(
+        coinId: coinId,
+      );
+
+      return right(response);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CoinHistoryResponse>> getCoinHistory({
+    required String coinId,
+  }) async {
+    try {
+      if (!await (connectionChecker.isConnected)) {
+        return left(Failure(Constants.noConnectionErrorMessage));
+      }
+      final response = await dashboardRemoteDatasources.getCoinHistory(
+        coinId: coinId,
+      );
 
       return right(response);
     } on ServerException catch (e) {
