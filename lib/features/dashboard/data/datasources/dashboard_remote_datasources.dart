@@ -23,6 +23,7 @@ class DashboardRemoteDatasourcesImpl implements DashboardRemoteDatasources {
     try {
       final response = await dioClient.get(
         Endpoints.coins,
+        queryParameters: qparams,
         options: Options(
           headers: {
             'x-rapidapi-host': dotenv.env['X_RAPIDAPI_HOST'],

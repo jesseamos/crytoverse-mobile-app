@@ -25,7 +25,7 @@ class CryptoCurrency {
 
 // The main screen widget
 class HomeScreen extends StatefulWidget {
-  static const routeName = '/payment-currrency';
+  static const routeName = '/home-screen';
   const HomeScreen({super.key});
 
   @override
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<DashboardCubit>().getCoins();
+      context.read<DashboardCubit>().getCoins(qparams: {"limit": 300});
     });
     super.initState();
   }
@@ -56,6 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: BlocBuilder<DashboardCubit, DashboardState>(
+        buildWhen: (previous, current) =>
+            current is GetCoinsSuccess || current is GetCoinsLoading,
         builder: (context, state) {
           if (state is GetCoinsFailure) {
             return Center(child: Text(state.message));

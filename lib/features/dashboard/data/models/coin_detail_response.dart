@@ -146,7 +146,7 @@ class CoinLink {
 class Supply {
   final bool confirmed;
   final int supplyAt;
-  final String max;
+  final String? max;
   final String total;
   final String circulating;
 

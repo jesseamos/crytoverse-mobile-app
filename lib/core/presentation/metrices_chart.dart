@@ -187,7 +187,7 @@ Widget buildBarChartCard({
                   ),
                 ),
                 maxY: maxY, // Set max Y value
-                minY: 1,
+                minY: null,
                 alignment: BarChartAlignment.spaceAround,
                 groupsSpace: 10, // Space between bar groups
               ),

@@ -46,6 +46,7 @@ class ServicesMetricesCard extends StatelessWidget {
           ),
           Text(
             count,
+            maxLines: 1,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.white,

@@ -1,4 +1,6 @@
 import 'package:coinranking/core/icons/reward_icon.dart';
+import 'package:coinranking/core/utils/utils.dart';
+import 'package:coinranking/features/dashboard/data/models/coin_detail_response.dart';
 
 class ServiesMetrices {
   final String icon;
@@ -11,15 +13,27 @@ class ServiesMetrices {
   });
 }
 
-List<ServiesMetrices> mapRewardMetrices({required dynamic param}) {
+List<ServiesMetrices> mapRewardMetrices({required CoinDetail param}) {
   return [
     ServiesMetrices(
       icon: totalEarningIcon,
-      title: 'Total Earnings',
-      count: '\$100',
+      title: 'Price to USD',
+      count: '\$${formatCompactNumber(param.price)}',
     ),
-    ServiesMetrices(icon: currentMrrIcon, title: 'Current MRR', count: '\$100'),
-    ServiesMetrices(icon: signupIcon, title: 'Sign Ups', count: '100'),
-    ServiesMetrices(icon: linkClickedIcon, title: 'Link Clicks', count: '0'),
+    ServiesMetrices(
+      icon: currentMrrIcon,
+      title: 'Rank',
+      count: formatCompactNumber(param.rank),
+    ),
+    ServiesMetrices(
+      icon: signupIcon,
+      title: 'Market Cap',
+      count: formatCompactNumber(param.marketCap),
+    ),
+    ServiesMetrices(
+      icon: linkClickedIcon,
+      title: 'All-time-high(daily avg.',
+      count: formatCompactNumber(param.allTimeHigh.price),
+    ),
   ];
 }

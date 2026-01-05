@@ -45,10 +45,10 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   Future<void> getCoinHistory({required String coinId}) async {
     emit(GetCoinHistoryLoading());
-    final response = await getCoinDetailsUsecase.call(coinId);
+    final response = await getCoinHistoryUsecase.call(coinId);
     response.fold(
       (f) => emit(GetCoinHistoryFailure(f.message)),
-      (response) => emit(GetCoinDetailSuccess(response)),
+      (response) => emit(GetCoinHistorySuccess(response)),
     );
   }
 }

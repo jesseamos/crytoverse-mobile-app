@@ -1,10 +1,11 @@
 import 'package:coinranking/core/icons/reward_icon.dart';
+import 'package:coinranking/features/dashboard/data/models/coin_detail_response.dart';
 import 'package:coinranking/features/dashboard/presentation/static/service_metrices.dart';
 import 'package:coinranking/features/dashboard/presentation/widgets/services_metrices_card.dart';
 import 'package:flutter/material.dart';
 
 class RewardMetricesGrid extends StatefulWidget {
-  final dynamic param;
+  final CoinDetail param;
   RewardMetricesGrid({super.key, required this.param});
 
   @override

@@ -21,43 +21,12 @@ class _StatsCarouselState extends State<StatsCarousel> {
   int _currentPage = 0;
   Timer? _autoSlideTimer;
 
-  List<Map<String, dynamic>> _summaryCards = [
-    {
-      "title": "Total Events",
-      "count": '240',
-      "subtext": "All-time Event organised",
-      "chartData": [3, 5, 8, 6, 9, 10, 12],
-    },
-    {
-      "title": "Active Events",
-      "count": '6',
-      "subtext": "Currently in progress",
-      "chartData": [2, 4, 3, 5, 6, 4, 7],
-    },
-    {
-      "title": "Upcoming Events",
-      "count": '225',
-      "subtext": "Events Still Anticipated",
-      "chartData": [4, 5, 7, 8, 9, 10, 11],
-    },
-    {
-      "title": "Past Events",
-      "count": '9',
-      "subtext": "Orders cancelled by client or vendor",
-      "chartData": [1, 2, 1, 2, 1, 1, 2],
-    },
-    {
-      "title": "Revenue Generated",
-      "count": "₦350,000",
-      "subtext": "Orders cancelled by client or vendor",
-      "chartData": [1, 2, 1, 2, 1, 1, 2],
-    },
-  ];
+  List<Map<String, dynamic>> _summaryCards = [];
 
   @override
   void initState() {
     super.initState();
-    _summaryCards = widget.summaryCards ?? _summaryCards;
+    _summaryCards = widget.summaryCards;
     _startAutoSlide();
   }
 
